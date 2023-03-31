@@ -25,7 +25,7 @@ class TestProducts:
 
     def test_product_check_quantity_greater(self, product):
         # TODO напишите проверки на метод check_quantity
-        assert product.check_quantity(5000), 'Книг должно быть недостаточно'
+        assert product.check_quantity(5000) is False, 'Книг должно быть недостаточно'
 
     def test_product_check_quantity_equal(self, product):
         # TODO напишите проверки на метод check_quantity
