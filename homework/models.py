@@ -18,7 +18,7 @@ class Product:
         TODO Верните True если количество продукта больше или равно запрашиваемому
             и False в обратном случае
         """
-        raise NotImplementedError
+        return self.quantity >= quantity
 
     def buy(self, quantity):
         """
@@ -26,7 +26,9 @@ class Product:
             Проверьте количество продукта используя метод check_quantity
             Если продуктов не хватает, то выбросите исключение ValueError
         """
-        raise NotImplementedError
+        if not self.check_quantity(quantity):
+            raise ValueError
+        self.quantity -= quantity
 
     def __hash__(self):
         return hash(self.name + self.description)
@@ -50,7 +52,13 @@ class Cart:
         Метод добавления продукта в корзину.
         Если продукт уже есть в корзине, то увеличиваем количество
         """
-        raise NotImplementedError
+        if not product.check_quantity(quantity):
+            raise ValueError
+        else:
+            if product in self.products:
+                self.products[product] += quantity
+            else:
+                self.products[product] = quantity
 
     def remove_product(self, product: Product, quantity=None):
         """
@@ -58,13 +66,21 @@ class Cart:
         Если quantity не передан, то удаляется вся позиция
         Если quantity больше, чем количество продуктов в позиции, то удаляется вся позиция
         """
-        raise NotImplementedError
+        if self.products[product] >= quantity:
+            self.products[product] -= quantity
+        elif self.products[product] == quantity:
+            self.products.pop(product, None)
+        elif self.products[product] < quantity:
+            self.products.pop(product, None)
 
     def clear(self):
-        raise NotImplementedError
+        self.products = {}
 
     def get_total_price(self) -> float:
-        raise NotImplementedError
+        sum_products = 0
+        for product, quantity in self.products.items():
+            sum_products += product.price * quantity
+        return sum_products
 
     def buy(self):
         """
@@ -72,4 +88,6 @@ class Cart:
         Учтите, что товаров может не хватать на складе.
         В этом случае нужно выбросить исключение ValueError
         """
-        raise NotImplementedError
+        for product, quantity in self.products.items():
+            product.buy(quantity)
+        self.clear()
