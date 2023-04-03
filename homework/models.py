@@ -68,9 +68,7 @@ class Cart:
         """
         if self.products[product] > quantity:
             self.products[product] -= quantity
-        elif self.products[product] == quantity:
-            self.products.pop(product, None)
-        elif self.products[product] < quantity:
+        elif self.products[product] <= quantity:
             self.products.pop(product, None)
 
     def clear(self):
