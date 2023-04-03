@@ -66,7 +66,7 @@ class Cart:
         Если quantity не передан, то удаляется вся позиция
         Если quantity больше, чем количество продуктов в позиции, то удаляется вся позиция
         """
-        if self.products[product] >= quantity:
+        if self.products[product] > quantity:
             self.products[product] -= quantity
         elif self.products[product] == quantity:
             self.products.pop(product, None)
